@@ -2,6 +2,7 @@ import aiosmtplib
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+from fastapi_mail import FastMail
 
 from api.v1 import notifications
 from core.config import get_settings
@@ -20,14 +21,7 @@ app = FastAPI(
 
 @app.on_event('startup')
 async def startup():
-    server.email_client = aiosmtplib.SMTP(
-        hostname=settings.mail_config.MAIL_SERVER,
-        port=settings.mail_config.MAIL_PORT,
-        use_tls=True,
-        validate_certs=False
-    )
-    await server.email_client.connect()
-    await server.email_client.login(settings.mail_config.MAIL_USERNAME, settings.mail_config.MAIL_PASSWORD)
+    server.email_client = FastMail(settings.mail_config)
 
 
 @app.on_event('shutdown')
