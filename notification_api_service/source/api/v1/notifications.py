@@ -24,7 +24,7 @@ async def send_with_template(email: EmailModel, producer=Depends(get_mq_producer
     message = await EmailBuilder.async_build(email, template)
 
     # кладем задачу в очередь
-    await producer.async_publish(routing_key=queue_name, body=message.json())
+    await producer.async_publish(routing_key=queue_name, body=message.as_string())  # возможно потребуется правка
 
     return JSONResponse(
         status_code=HTTPStatus.OK,
