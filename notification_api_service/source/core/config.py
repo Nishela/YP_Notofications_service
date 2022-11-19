@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 from typing import Any
@@ -11,6 +12,7 @@ from core.logger import LOGGING
 
 __all__ = (
     'get_settings',
+    'QueueTypes',
 )
 
 load_dotenv()
@@ -38,9 +40,24 @@ class MailConfig(BaseSettings):
     VALIDATE_CERTS: bool = Field(False, env='VALIDATE_CERTS')
 
 
+class RabbitConfig(BaseSettings):
+    host: str = Field('localhost', env='RABBITMQ_HOST')
+    port: int = Field(5672, env='RABBITMQ_PORT')
+    login: str = Field(..., env='RABBITMQ_USER')
+    password: str = Field(..., env='RABBITMQ_PASSWORD')
+
+
+class QueueTypes(BaseSettings):
+    NEW_REGISTRATION = 'new_registration'
+    NOTIFICATION = 'notification'
+    WEEKLY = 'weekly'
+
+
 class Settings(BaseSettings):
     app = AppConfig()
     mail_config = ConnectionConfig(**MailConfig().dict())
+    rabbit_config = RabbitConfig().dict()
+    queue_types = QueueTypes().dict()
 
 
 @lru_cache(maxsize=128)
