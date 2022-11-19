@@ -13,7 +13,7 @@ class RabbitMQ(BaseSettings):
     RABBIT_HOST: str = Field('localhost', env='RABBITMQ_HOST')
     RABBIT_PORT: int = Field(15672, env='RABBITMQ_PORT')
     RABBIT_USER: str = Field(..., env='RABBITMQ_USER')
-    RABBIT_PASSWORD: str = Field(..., env='RABBITMQ_PASS')
+    RABBIT_PASSWORD: str = Field(..., env='RABBITMQ_PASSWORD')
 
 
 class MailConfig(BaseSettings):
@@ -24,9 +24,16 @@ class MailConfig(BaseSettings):
     TEMPLATE_FOLDER: str = Field(os.path.join(BASE_DIR, 'source/html_templates'))
 
 
+class QueueTypes(BaseSettings):
+    NEW_REGISTRATION = 'new_registration'
+    NOTIFICATION = 'notification'
+    WEEKLY = 'weekly'
+
+
 class Settings(BaseSettings):
     rabbitmq = RabbitMQ()
     mail_config = MailConfig()
+    queue_types = QueueTypes().dict()
 
 
 @lru_cache(maxsize=128)
