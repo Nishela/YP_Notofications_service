@@ -1,11 +1,8 @@
 import os
-from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
-from typing import Any
 
 from dotenv import load_dotenv
-from fastapi_mail import ConnectionConfig
 from pydantic import BaseSettings, Field
 
 from core.logger import LOGGING
@@ -29,15 +26,6 @@ class AppConfig(BaseSettings):
 
 class MailConfig(BaseSettings):
     MAIL_FROM: str = Field(..., env='MAIL_USERNAME')
-    MAIL_FROM_NAME: str = Field(..., env='MAIL_FROM_NAME')
-    MAIL_PASSWORD: str = Field(..., env='MAIL_PASSWORD')
-    MAIL_PORT: int = Field(..., env='MAIL_PORT')
-    MAIL_SERVER: str = Field(..., env='MAIL_SERVER')
-    MAIL_SSL_TLS: bool = Field(True, env='MAIL_SSL_TLS')
-    MAIL_STARTTLS: bool = Field(False, env='MAIL_STARTTLS')
-    MAIL_USERNAME: str = Field(..., env='MAIL_USERNAME')
-    TEMPLATE_FOLDER: Any = Field(os.path.join(BASE_DIR, 'source/html_templates'))
-    VALIDATE_CERTS: bool = Field(False, env='VALIDATE_CERTS')
 
 
 class RabbitConfig(BaseSettings):
@@ -45,6 +33,7 @@ class RabbitConfig(BaseSettings):
     port: int = Field(5672, env='RABBITMQ_PORT')
     login: str = Field(..., env='RABBITMQ_USER')
     password: str = Field(..., env='RABBITMQ_PASSWORD')
+    EXCHANGE_POINT_NAME: str = Field('emails', env='EXCHANGE_POINT_NAME')
 
 
 class QueueTypes(BaseSettings):
@@ -55,9 +44,9 @@ class QueueTypes(BaseSettings):
 
 class Settings(BaseSettings):
     app = AppConfig()
-    mail_config = ConnectionConfig(**MailConfig().dict())
     rabbit_config = RabbitConfig().dict()
     queue_types = QueueTypes().dict()
+    mail_config = MailConfig()
 
 
 @lru_cache(maxsize=128)
