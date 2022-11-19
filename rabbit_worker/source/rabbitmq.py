@@ -1,16 +1,22 @@
 from typing import Callable, Optional
 
 import pika
+from pika import ConnectionParameters, PlainCredentials
 from pika.adapters.select_connection import SelectConnection
 from pika.channel import Channel
 from pika.frame import Method
 from pika.spec import BasicProperties
 
-from core.config import Config
-
 
 class Consumer:
-    def __init__(self):
+    def __init__(self, settings):
+        __rabbit_credentials: PlainCredentials = PlainCredentials(
+            settings.RABBIT_USER,
+            settings.RABBIT_PASSWORD)
+        self.pika_parameters: ConnectionParameters = pika.ConnectionParameters(
+            host=settings.RABBIT_HOST,
+            port=settings.RABBIT_PORT,
+            credentials=__rabbit_credentials)
         self.channel: Optional[Channel] = None
         self.connection: Optional[SelectConnection] = None
         self.custom_callback: Optional[Callable] = None
@@ -20,7 +26,7 @@ class Consumer:
 
     def connect(self):
         connection = pika.SelectConnection(
-            Config.pika_parameters,
+            self.pika_parameters,
             on_open_callback=self.on_connected)
         self.connection = connection
 
@@ -59,11 +65,3 @@ class Consumer:
     def stop(self):
         self.connection.ioloop.stop()
         self.connection.close()
-
-
-def publish_event(message):  # TODO:
-    connection = pika.BlockingConnection(Config.pika_parameters)
-    channel = connection.channel()
-    channel.queue_declare(queue="test", durable=True, exclusive=False, auto_delete=False)
-    channel.basic_publish(exchange='', routing_key="test", body=message)
-    connection.close()
