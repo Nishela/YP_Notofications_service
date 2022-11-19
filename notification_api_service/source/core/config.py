@@ -44,7 +44,7 @@ class QueueTypes(BaseSettings):
 
 class Settings(BaseSettings):
     app = AppConfig()
-    rabbit_config = RabbitConfig().dict()
+    rabbit_config = RabbitConfig()
     queue_types = QueueTypes().dict()
     mail_config = MailConfig()
 
