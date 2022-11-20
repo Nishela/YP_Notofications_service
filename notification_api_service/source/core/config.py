@@ -38,7 +38,7 @@ class RabbitConfig(BaseSettings):
 
 class PostgresConfig(BaseSettings):
     SQLALCHEMY_DATABASE_URI: str = Field(..., env='SQLALCHEMY_DATABASE_URI')
-    SQLALCHEMY_TRACK_MODIFICATIONS: bool
+    DB_ECHO_LOG: bool = Field(True, env='DB_ECHO_LOG')
 
 
 class QueueTypes(BaseSettings):
@@ -58,3 +58,5 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=128)
 def get_settings() -> Settings:
     return Settings()
+
+print(1)
