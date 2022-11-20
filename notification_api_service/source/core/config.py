@@ -36,6 +36,11 @@ class RabbitConfig(BaseSettings):
     EXCHANGE_POINT_NAME: str = Field('emails', env='EXCHANGE_POINT_NAME')
 
 
+class PostgresConfig(BaseSettings):
+    SQLALCHEMY_DATABASE_URI: str = Field(..., env='SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool
+
+
 class QueueTypes(BaseSettings):
     NEW_REGISTRATION = 'new_registration'
     NOTIFICATION = 'notification'
@@ -47,6 +52,7 @@ class Settings(BaseSettings):
     rabbit_config = RabbitConfig()
     queue_types = QueueTypes().dict()
     mail_config = MailConfig()
+    db_config = PostgresConfig()
 
 
 @lru_cache(maxsize=128)
