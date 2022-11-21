@@ -19,9 +19,6 @@ class Templates(Base):
     __tablename__ = "templates"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    notification_id = Column(UUID(as_uuid=True), ForeignKey('notifications.id'))
     body = Column(Text(), nullable=False)
-    notification = relationship(
-        'Notifications',
-        back_populates='template'
-    )
+    notification_id = Column(UUID(as_uuid=True), ForeignKey('notifications.id'))
+    notification = relationship("Notifications", back_populates="template", uselist=False)
