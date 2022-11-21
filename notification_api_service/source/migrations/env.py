@@ -29,11 +29,11 @@ from database.tables import Templates, Notifications
 
 target_metadata = Base.metadata
 
-
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+config.set_main_option("sqlalchemy.url", os.environ["SQLALCHEMY_DATABASE_URI"])
 
 
 def run_migrations_offline():
