@@ -19,4 +19,4 @@ class Notifications(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name = Column(String(256), unique=True, nullable=False)
-    template = relationship('Templates', back_populates="notification")
+    template = relationship("Templates", back_populates="notification", uselist=False)
