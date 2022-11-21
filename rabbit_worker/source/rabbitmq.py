@@ -7,6 +7,8 @@ from pika.channel import Channel
 from pika.frame import Method
 from pika.spec import BasicProperties
 
+from rabbit_worker.source.decorators import backoff
+
 
 class Consumer:
     def __init__(self, settings):
@@ -60,6 +62,7 @@ class Consumer:
     def nack_message(self, delivery_tag: int):
         self.channel.basic_nack(delivery_tag)
 
+    @backoff()
     def start(self):
         self.connect()
         self.connection.ioloop.start()

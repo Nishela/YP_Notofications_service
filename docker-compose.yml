@@ -1,12 +1,57 @@
-version: "3.9"
+version: '3.9'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.11.3
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+    networks:
+      - notification-service
+
   postgres:
-    container_name: postgres
     image: postgres:13-alpine
+    container_name: postgres
     environment:
       - POSTGRES_DB=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
+    networks:
+      - notification-service
+
+  notification-worker:
+    build:
+      context: ./rabbit_worker
+      dockerfile: Dockerfile
+    container_name: notification-worker
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - notification-service
+
+  notification-api:
+    build:
+      context: ./notification_api_service
+      dockerfile: Dockerfile
+    container_name: notification-api
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - notification-service
+
+networks:
+  notification-service:
+    driver: bridge
