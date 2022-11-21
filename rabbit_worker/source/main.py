@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiosmtplib import SMTPRecipientsRefused
 from pika import BasicProperties
@@ -19,9 +20,12 @@ parser = BytesParser()
 async def send_notification(channel: Channel, method: Basic.Deliver, properties: BasicProperties, body: bytes):
     message = parser.parsebytes(body)
     try:
+        logging.debug('Received message from queue to %s', message.get('To'))
         await email_client.sendmail(message.get('From'), message.get('To'), message.as_string())
+        logging.debug('Message sent')
         return True
     except SMTPRecipientsRefused:
+        logging.warning('Message to %s doesn\'t sent', message.get('To'))
         return False
 
 
@@ -34,6 +38,8 @@ if __name__ == '__main__':
     consumer.set_on_message_callback(send_notification)
 
     try:
+        logging.info('Start consumer')
         consumer.start()
     finally:
+        logging.info('Consumer stopped')
         consumer.stop()

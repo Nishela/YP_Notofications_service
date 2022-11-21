@@ -1,3 +1,4 @@
+# type: ignore
 from typing import Callable, Optional
 
 import pika
@@ -67,6 +68,7 @@ class Consumer:
         self.connect()
         self.connection.ioloop.start()
 
+    @backoff()
     def stop(self):
         self.connection.ioloop.stop()
         self.connection.close()

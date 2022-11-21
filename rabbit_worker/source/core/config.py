@@ -1,12 +1,23 @@
 import os
 from functools import lru_cache
+from logging import config as logging_config
 
 from dotenv import load_dotenv
 from pydantic import BaseSettings, Field
 
+from logger import LOGGING
+
 load_dotenv()
 
+# Применяем настройки логирования
+logging_config.dictConfig(LOGGING)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
+
+
+class AppConfig(BaseSettings):
+    base_dir: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_name: str = Field('PROJECT_NAME', env='PROJECT_NAME')
+    logging = LOGGING
 
 
 class RabbitMQ(BaseSettings):
@@ -31,6 +42,7 @@ class QueueTypes(BaseSettings):
 
 
 class Settings(BaseSettings):
+    app = AppConfig()
     rabbitmq = RabbitMQ()
     mail_config = MailConfig()
     queue_types = QueueTypes().dict()
