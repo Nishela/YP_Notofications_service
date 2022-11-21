@@ -20,10 +20,13 @@ async def send_with_template(email: EmailModel, producer=Depends(get_mq_producer
             content={'message': f'Incorrect notification type - {email.notification_type}'}
         )
 
-    template = ''  # TODO: тут должен быть запрос шаблона из БД
-    message = await EmailBuilder.async_build(email, template)
+    if not (template := await email.Config.db_manager.async_get_template(email.notification_type)):
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND,
+            content={'message': f'Template not found - {email.notification_type}'}
+        )
 
-    # кладем задачу в очередь
+    message = await EmailBuilder.async_build(email, template)
     await producer.async_publish(routing_key=queue_name, body=message.as_string())  # возможно потребуется правка
 
     return JSONResponse(
