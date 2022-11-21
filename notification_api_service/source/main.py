@@ -5,6 +5,7 @@ from fastapi.responses import ORJSONResponse
 
 from api.v1 import notifications
 from core.config import get_settings
+from database.base import init_tables
 from rabbit_producer import rabbit_utils
 from rabbit_producer.producer import RabbitProducer
 
@@ -22,6 +23,7 @@ app = FastAPI(
 async def startup():
     rabbit_utils.mq_connection = await aio_pika.connect_robust(**settings.rabbit_config.dict())
     rabbit_utils.mq_producer = await RabbitProducer().async_configure(settings.rabbit_config.EXCHANGE_POINT_NAME)
+    await init_tables()
 
 
 @app.on_event('shutdown')

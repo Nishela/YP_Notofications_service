@@ -39,7 +39,7 @@ class RabbitConfig(BaseSettings):
 class PostgresConfig(BaseSettings):
     SQLALCHEMY_DATABASE_URI: str = Field(..., env='SQLALCHEMY_DATABASE_URI')
     DB_ECHO_LOG: bool = Field(True, env='DB_ECHO_LOG')
-    DB_MIGRATIONS_URI: str = Field(..., env='DB_MIGRATIONS_URI')
+
 
 class QueueTypes(BaseSettings):
     NEW_REGISTRATION = 'new_registration'

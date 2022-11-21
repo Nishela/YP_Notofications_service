@@ -25,7 +25,6 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 
 # IMPORT MODELS
-from database.tables import Templates, Notifications
 
 target_metadata = Base.metadata
 
@@ -33,7 +32,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option("sqlalchemy.url", os.environ["SQLALCHEMY_DATABASE_URI"])
+config.set_main_option("sqlalchemy.url", os.getenv("SQLALCHEMY_DATABASE_URI"))
 
 
 def run_migrations_offline():
@@ -45,7 +44,7 @@ def run_migrations_offline():
     Calls to context.execute() here emit the given string to the
     script output.
     """
-    url = config.get_main_option(os.environ["SQLALCHEMY_DATABASE_URI"])
+    url = config.get_main_option(os.getenv("SQLALCHEMY_DATABASE_URI"))
     context.configure(
         url=url,
         target_metadata=target_metadata,
