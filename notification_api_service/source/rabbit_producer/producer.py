@@ -1,5 +1,5 @@
+# type[ignore]
 from dataclasses import dataclass
-from typing import Optional, Any
 
 from aio_pika import Message, DeliveryMode, ExchangeType
 
@@ -11,7 +11,6 @@ settings = get_settings()
 
 @dataclass
 class RabbitProducer:
-    # type[ignore]
     __channel = None
     __exchange_point = None
 
