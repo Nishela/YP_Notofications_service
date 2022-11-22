@@ -8,7 +8,7 @@ from pika.channel import Channel
 from pika.frame import Method
 from pika.spec import BasicProperties
 
-from rabbit_worker.source.decorators import backoff
+from decorators import backoff
 
 
 class Consumer:
