@@ -32,7 +32,6 @@ class MailConfig(BaseSettings):
     MAIL_PASSWORD: str = Field(..., env='MAIL_PASSWORD')
     MAIL_PORT: int = Field(..., env='MAIL_PORT')
     MAIL_SERVER: str = Field(..., env='MAIL_SERVER')
-    TEMPLATE_FOLDER: str = Field(os.path.join(BASE_DIR, 'source/html_templates'))
 
 
 class QueueTypes(BaseSettings):
