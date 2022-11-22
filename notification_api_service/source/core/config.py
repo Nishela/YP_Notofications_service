@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 
@@ -9,7 +10,7 @@ from core.logger import LOGGING
 
 __all__ = (
     'get_settings',
-    'QueueTypes',
+    'NotificationTypes',
 )
 
 load_dotenv()
@@ -19,16 +20,25 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
 
 
 class AppConfig(BaseSettings):
+    """
+    Конфигурация приложения.
+    """
     base_dir: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     project_name: str = Field('PROJECT_NAME', env='PROJECT_NAME')
     logging = LOGGING
 
 
 class MailConfig(BaseSettings):
+    """
+    Конфигурация email адреса проекта.
+    """
     MAIL_FROM: str = Field(..., env='MAIL_USERNAME')
 
 
 class RabbitConfig(BaseSettings):
+    """
+    Конфигурация RabbitMQ.
+    """
     host: str = Field('localhost', env='RABBITMQ_HOST')
     port: int = Field(5672, env='RABBITMQ_PORT')
     login: str = Field(..., env='RABBITMQ_USER')
@@ -37,11 +47,17 @@ class RabbitConfig(BaseSettings):
 
 
 class PostgresConfig(BaseSettings):
+    """
+    Конфигурация PostgreSQL.
+    """
     SQLALCHEMY_DATABASE_URI: str = Field(..., env='SQLALCHEMY_DATABASE_URI')
     DB_ECHO_LOG: bool = Field(True, env='DB_ECHO_LOG')
 
 
-class QueueTypes(BaseSettings):
+class NotificationTypes(Enum):
+    """
+    Типы уведомлений.
+    """
     NEW_REGISTRATION = 'new_registration'
     NOTIFICATION = 'notification'
     WEEKLY = 'weekly'
@@ -50,7 +66,7 @@ class QueueTypes(BaseSettings):
 class Settings(BaseSettings):
     app = AppConfig()
     rabbit_config = RabbitConfig()
-    queue_types = QueueTypes().dict()
+    notification_types = NotificationTypes
     mail_config = MailConfig()
     db_config = PostgresConfig()
 

@@ -13,15 +13,6 @@ engine = create_async_engine(settings.db_config.SQLALCHEMY_DATABASE_URI)
 Base = declarative_base()
 
 
-async def init_tables():
-    """
-    Создание таблиц в PostgreSQL
-    """
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
-
-
 def async_session_generator():
     return sessionmaker(
         engine, class_=AsyncSession
@@ -31,12 +22,13 @@ def async_session_generator():
 @asynccontextmanager
 async def get_session():
     """
-    Получить сессию БД. Будет использоваться в Depends.
+    Получить сессию БД.
     """
     try:
         async_session = async_session_generator()
         async with async_session() as session:
             yield session
+            await session.commit()
     except Exception as error:
         await session.rollback()
         raise error
