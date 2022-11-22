@@ -1,4 +1,4 @@
-# type[ignore]
+# type: ignore
 from dataclasses import dataclass
 
 from aio_pika import Message, DeliveryMode, ExchangeType
