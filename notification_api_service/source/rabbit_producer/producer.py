@@ -11,8 +11,9 @@ settings = get_settings()
 
 @dataclass
 class RabbitProducer:
-    __channel: Optional[Any] = None
-    __exchange_point: Optional[Any] = None
+    # type[ignore]
+    __channel = None
+    __exchange_point = None
 
     async def async_configure(self, exchange_name: str):
         """
