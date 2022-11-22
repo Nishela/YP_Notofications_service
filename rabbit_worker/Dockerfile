@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM bitnami/python:3.10
 
 WORKDIR /usr/src/app
 
