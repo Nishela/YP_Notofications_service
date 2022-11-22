@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import Optional, Any
 
 from aio_pika import Message, DeliveryMode, ExchangeType
 
@@ -11,14 +11,14 @@ settings = get_settings()
 
 @dataclass
 class RabbitProducer:
-    __channel = None
-    __exchange_point = None
+    __channel: Optional[Any] = None
+    __exchange_point: Optional[Any] = None
 
-    async def async_configure(self, exchange_name: str) -> ClassVar:
+    async def async_configure(self, exchange_name: str):
         """
         Конфигурирование RabbitMQ.
         :param exchange_name: str
-        :return: ClassVar
+        :return:
         """
 
         connection = await get_mq_connection()
