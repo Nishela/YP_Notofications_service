@@ -18,7 +18,10 @@ class EmailBuilder:
         message["From"] = settings.mail_config.MAIL_FROM
         message["To"] = ",".join(email_instance.recipients)
         message["Subject"] = email_instance.subject
-        template = Environment(loader=BaseLoader(), enable_async=True).from_string(html_template)
-        output = await template.render_async(**email_instance.body.dict())
-        message.add_alternative(output, subtype='html')
+        if html_template:
+            template = Environment(loader=BaseLoader(), enable_async=True).from_string(html_template)
+            output = await template.render_async(**email_instance.body.dict())
+            message.add_alternative(output, subtype='html')
+            return message
+        message.set_content('\n'.join(email_instance.body.dict().values()))
         return message
