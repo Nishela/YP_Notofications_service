@@ -38,5 +38,3 @@ async def send_with_template(email: EmailModel, notification_type: NotificationT
         status_code=HTTPStatus.OK,
         content={'message': f'SUCCESS'}
     )
-
-# TODO: предусмотреть апи для неотправленных сообщений, чтобы добавить их в БД

@@ -24,5 +24,3 @@ class DbManager:
                 .where(Notifications.name == notification_name)
             )
             return result.first()[0].body
-
-    # TODO: вероятно можно накидать методов записи данных в таблицы, добавление шаблонов и тд
