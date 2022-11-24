@@ -34,10 +34,12 @@ class Notifications:
     @sync
     async def sms_notification(channel: Channel, method: Basic.Deliver, properties: BasicProperties, body: bytes):
         """Future"""
+        logging.warning('Future notification handler. Message received:\n%s', body.decode(encoding='utf-8'))
         return True
 
     @staticmethod
     @sync
     async def push_notification(channel: Channel, method: Basic.Deliver, properties: BasicProperties, body: bytes):
         """Future"""
+        logging.warning('Future notification handler. Message received:\n%s', body.decode(encoding='utf-8'))
         return True
