@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from model_mixins import DbManagerMixin
+from .model_mixins import DbManagerMixin
 
 __all__ = (
     'PushModel',

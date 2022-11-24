@@ -7,5 +7,5 @@ __all__ = (
 
 class DbManagerMixin:
     """Добавляет в модели менеджера для работы с БД PG"""
-    class Config:
+    class ManagerConfig:
         db_manager = DbManager

@@ -8,7 +8,7 @@ up:
 	docker-compose up -d $(c)
 
 up-dev:
-	docker-compose -f docker-compose.dev.yml up -d $(c)
+	docker-compose -f docker-compose.dev.yml up --build -d $(c)
 
 down:
 	docker-compose down

@@ -13,8 +13,8 @@ router = APIRouter()
 
 
 @router.post('/send_email', response_model=Any, summary='Create task for send email notification')
-async def send_email_notification(email: EmailModel,
-                                  producer=Depends(get_mq_producer), use_template: bool = True) -> JSONResponse:
+async def send_email_notification(email: EmailModel, producer=Depends(get_mq_producer),
+                                  use_template: bool = True) -> JSONResponse:
     """
         ## Create task for send email notification:
         - _email_ - Модель email уведомления
@@ -22,7 +22,10 @@ async def send_email_notification(email: EmailModel,
     """
     template = ''
     if use_template:
-        if not (template := await email.Config.db_manager.async_get_template(NotificationTypes.EMAIL.value)):
+        if not (
+                template := await email.ManagerConfig.db_manager.async_get_template(
+                    NotificationTypes.EMAIL.value)
+        ):
             return JSONResponse(
                 status_code=HTTPStatus.NOT_FOUND,
                 content={'message': f'Template not found - {NotificationTypes.EMAIL.value}'}
@@ -44,7 +47,10 @@ async def send_push_notification(push_notification: PushModel,
         ## Create task for send push notification:
         - _push_notification_ - Модель push уведомления
     """
-    if not (template := await push_notification.Config.db_manager.async_get_template(NotificationTypes.PUSH.value)):
+    if not (
+            template := await push_notification.ManagerConfig.db_manager.async_get_template(
+                NotificationTypes.PUSH.value)
+    ):
         return JSONResponse(
             status_code=HTTPStatus.NOT_FOUND,
             content={'message': f'Template not found - {NotificationTypes.PUSH.value}'}
@@ -66,7 +72,10 @@ async def send_sms_notification(sms_notification: SmsModel,
         ## Create task for send sms notification:
         - _sms_notification_ - Модель sms уведомления
     """
-    if not (template := await sms_notification.Config.db_manager.async_get_template(NotificationTypes.SMS.value)):
+    if not (
+            template := await sms_notification.ManagerConfig.db_manager.async_get_template(
+                NotificationTypes.SMS.value)
+    ):
         return JSONResponse(
             status_code=HTTPStatus.NOT_FOUND,
             content={'message': f'Template not found - {NotificationTypes.SMS.value}'}
