@@ -5,15 +5,15 @@ from jinja2 import Environment, BaseLoader
 from core.config import get_settings
 
 __all__ = (
-    'EmailBuilder',
+    'NotificationBuilder',
 )
 settings = get_settings()
 
 
-class EmailBuilder:
+class NotificationBuilder:
 
     @classmethod
-    async def async_build(cls, email_instance, html_template: str = ''):
+    async def async_build_email(cls, email_instance, html_template: str = ''):
         message = EmailMessage()
         message["From"] = settings.mail_config.MAIL_FROM
         message["To"] = ",".join(email_instance.recipients)
@@ -25,3 +25,11 @@ class EmailBuilder:
             return message
         message.set_content('\n'.join(email_instance.body.dict().values()))
         return message
+
+    @classmethod
+    async def async_build_push(cls, push_instance, template: str = ''):
+        return template % (push_instance.user, push_instance.header, push_instance.content)
+
+    @classmethod
+    async def async_build_sms(cls, sms_instance, template: str = ''):
+        return template % (sms_instance.user, sms_instance.content)

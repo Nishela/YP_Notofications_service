@@ -43,7 +43,7 @@ class RabbitConfig(BaseSettings):
     port: int = Field(5672, env='RABBITMQ_PORT')
     login: str = Field(..., env='RABBITMQ_USER')
     password: str = Field(..., env='RABBITMQ_PASSWORD')
-    EXCHANGE_POINT_NAME: str = Field('emails', env='EXCHANGE_POINT_NAME')
+    EXCHANGE_POINT_NAME: str = Field('notifications', env='EXCHANGE_POINT_NAME')
 
 
 class PostgresConfig(BaseSettings):
@@ -58,9 +58,9 @@ class NotificationTypes(Enum):
     """
     Типы уведомлений.
     """
-    NEW_REGISTRATION = 'new_registration'
-    NOTIFICATION = 'notification'
-    WEEKLY = 'weekly'
+    EMAIL = 'email'
+    PUSH = 'push'
+    SMS = 'sms'
 
 
 class Settings(BaseSettings):
