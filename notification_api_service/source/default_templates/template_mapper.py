@@ -6,7 +6,7 @@ __all__ = (
 )
 
 HTML_MAPPER = {
-    NotificationTypes.NEW_REGISTRATION: default_template,
-    NotificationTypes.NOTIFICATION: default_template,
-    NotificationTypes.WEEKLY: default_template,
+    NotificationTypes.EMAIL: default_template,
+    NotificationTypes.PUSH: default_template,
+    NotificationTypes.SMS: default_template,
 }
