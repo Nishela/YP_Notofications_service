@@ -57,7 +57,7 @@ async def send_push_notification(push_notification: PushModel,
         )
 
     message = await NotificationBuilder.async_build_push(push_notification, template)
-    await producer.async_publish(routing_key=NotificationTypes.PUSH.value, body=message.encode('utf-8'))
+    await producer.async_publish(routing_key=NotificationTypes.PUSH.value, body=message)
 
     return JSONResponse(
         status_code=HTTPStatus.OK,
@@ -82,7 +82,7 @@ async def send_sms_notification(sms_notification: SmsModel,
         )
 
     message = await NotificationBuilder.async_build_sms(sms_notification, template)
-    await producer.async_publish(routing_key=NotificationTypes.SMS.value, body=message.encode('utf-8'))
+    await producer.async_publish(routing_key=NotificationTypes.SMS.value, body=message)
 
     return JSONResponse(
         status_code=HTTPStatus.OK,
