@@ -26,7 +26,7 @@ def backoff(start_sleep_time=0.1, factor=2, border_sleep_time=10):
                         n += 1
                     else:
                         seconds = border_sleep_time
-                    logging.error(f'{e}\nRetry after {seconds} seconds')
+                    logging.exception('Retry after %d seconds', seconds)
                     sleep(seconds)
 
         return inner

@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 
@@ -34,17 +35,20 @@ class MailConfig(BaseSettings):
     MAIL_SERVER: str = Field(..., env='MAIL_SERVER')
 
 
-class QueueTypes(BaseSettings):
-    NEW_REGISTRATION = 'new_registration'
-    NOTIFICATION = 'notification'
-    WEEKLY = 'weekly'
+class NotificationTypes(Enum):
+    """
+    Типы уведомлений.
+    """
+    EMAIL = 'email'
+    PUSH = 'push'
+    SMS = 'sms'
 
 
 class Settings(BaseSettings):
     app = AppConfig()
     rabbitmq = RabbitMQ()
     mail_config = MailConfig()
-    queue_types = QueueTypes().dict()
+    notification_types = NotificationTypes
 
 
 @lru_cache(maxsize=128)
