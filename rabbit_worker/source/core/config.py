@@ -3,12 +3,9 @@ from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 
-from dotenv import load_dotenv
 from pydantic import BaseSettings, Field
 
 from core.logger import LOGGING
-
-load_dotenv()
 
 # Применяем настройки логирования
 logging_config.dictConfig(LOGGING)

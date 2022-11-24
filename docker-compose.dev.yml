@@ -5,6 +5,7 @@ services:
     image: rabbitmq:3.11-management
     container_name: rabbitmq
     ports:
+      - "5672:5672"
       - "15672:15672"
 
     environment:
@@ -22,6 +23,8 @@ services:
       - POSTGRES_DB=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
     networks:
       - notification-service
 
