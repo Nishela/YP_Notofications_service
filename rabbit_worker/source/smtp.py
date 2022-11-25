@@ -6,15 +6,15 @@ class SMTPClient:
     def __init__(self, settings):
         self.settings = settings
         self.client = aiosmtplib.SMTP(
-            hostname=settings.MAIL_SERVER,
-            port=settings.MAIL_PORT,
+            hostname=settings.server,
+            port=settings.port,
             use_tls=True,
             validate_certs=False
         )
 
     async def __aenter__(self) -> SMTP:
         await self.client.connect()
-        await self.client.login(self.settings.MAIL_USERNAME, self.settings.MAIL_PASSWORD)
+        await self.client.login(self.settings.username, self.settings.password)
 
         return self.client
 

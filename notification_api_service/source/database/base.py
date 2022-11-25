@@ -8,7 +8,7 @@ from core.config import get_settings
 
 settings = get_settings()
 
-engine = create_async_engine(settings.db_config.SQLALCHEMY_DATABASE_URI)
+engine = create_async_engine(settings.db_config.uri)
 
 Base = declarative_base()
 

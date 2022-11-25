@@ -15,11 +15,11 @@ from decorators import backoff
 class Consumer:
     def __init__(self, settings):
         __rabbit_credentials: PlainCredentials = PlainCredentials(
-            settings.rabbitmq.RABBIT_USER,
-            settings.rabbitmq.RABBIT_PASSWORD)
+            settings.rabbitmq.login,
+            settings.rabbitmq.password)
         self.pika_parameters: ConnectionParameters = pika.ConnectionParameters(
-            host=settings.rabbitmq.RABBIT_HOST,
-            port=settings.rabbitmq.RABBIT_PORT,
+            host=settings.rabbitmq.host,
+            port=settings.rabbitmq.port,
             credentials=__rabbit_credentials)
         self.queue_types: Enum = settings.notification_types
         self.channel: Optional[Channel] = None

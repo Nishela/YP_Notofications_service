@@ -19,17 +19,23 @@ class AppConfig(BaseSettings):
 
 
 class RabbitMQ(BaseSettings):
-    RABBIT_HOST: str = Field('localhost', env='RABBITMQ_HOST')
-    RABBIT_PORT: int = Field(15672, env='RABBITMQ_PORT')
-    RABBIT_USER: str = Field(..., env='RABBITMQ_USER')
-    RABBIT_PASSWORD: str = Field(..., env='RABBITMQ_PASSWORD')
+    host: str = 'localhost'
+    port: int = 15672
+    login: str = ...
+    password: str = ...
+
+    class Config:
+        env_prefix = 'rabbitmq_'
 
 
 class MailConfig(BaseSettings):
-    MAIL_USERNAME: str = Field(..., env='MAIL_USERNAME')
-    MAIL_PASSWORD: str = Field(..., env='MAIL_PASSWORD')
-    MAIL_PORT: int = Field(..., env='MAIL_PORT')
-    MAIL_SERVER: str = Field(..., env='MAIL_SERVER')
+    username: str = ...
+    password: str = ...
+    port: int = ...
+    server: str = ...
+
+    class Config:
+        env_prefix = 'mail_'
 
 
 class NotificationTypes(Enum):

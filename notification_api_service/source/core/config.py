@@ -32,26 +32,32 @@ class MailConfig(BaseSettings):
     """
     Конфигурация email адреса проекта.
     """
-    MAIL_FROM: str = Field(..., env='MAIL_USERNAME')
+    mail_from: str = Field(..., env='MAIL_USERNAME')
 
 
 class RabbitConfig(BaseSettings):
     """
     Конфигурация RabbitMQ.
     """
-    host: str = Field('localhost', env='RABBITMQ_HOST')
-    port: int = Field(5672, env='RABBITMQ_PORT')
-    login: str = Field(..., env='RABBITMQ_USER')
-    password: str = Field(..., env='RABBITMQ_PASSWORD')
-    EXCHANGE_POINT_NAME: str = Field('notifications', env='EXCHANGE_POINT_NAME')
+    host: str = 'localhost'
+    port: int = 5672
+    login: str = ...
+    password: str = ...
+    exchange_point_name: str = 'notifications'
+
+    class Config:
+        env_prefix = 'rabbitmq_'
 
 
 class PostgresConfig(BaseSettings):
     """
     Конфигурация PostgreSQL.
     """
-    SQLALCHEMY_DATABASE_URI: str = Field(..., env='SQLALCHEMY_DATABASE_URI')
-    DB_ECHO_LOG: bool = Field(True, env='DB_ECHO_LOG')
+    uri: str = ...
+    echo_log: bool = True
+
+    class Config:
+        env_prefix = 'postgres_'
 
 
 class NotificationTypes(Enum):

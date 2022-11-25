@@ -23,7 +23,7 @@ app = FastAPI(
 @app.on_event('startup')
 async def startup():
     rabbit_utils.mq_connection = await aio_pika.connect_robust(**settings.rabbit_config.dict())
-    rabbit_utils.mq_producer = await RabbitProducer().async_configure(settings.rabbit_config.EXCHANGE_POINT_NAME)
+    rabbit_utils.mq_producer = await RabbitProducer().async_configure(settings.rabbit_config.exchange_point_name)
 
 
 @app.on_event('shutdown')

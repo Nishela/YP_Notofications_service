@@ -15,7 +15,7 @@ class NotificationBuilder:
     @classmethod
     async def async_build_email(cls, email_instance, html_template: str = ''):
         message = EmailMessage()
-        message["From"] = settings.mail_config.MAIL_FROM
+        message["From"] = settings.mail_config.mail_from
         message["To"] = ",".join(email_instance.recipients)
         message["Subject"] = email_instance.subject
         if html_template:

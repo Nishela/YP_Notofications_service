@@ -16,7 +16,7 @@ services:
       - notification-service
 
   postgres:
-    image: postgres:13-alpine
+    image: postgres:14.2-alpine
     container_name: postgres
     environment:
       - POSTGRES_DB=${POSTGRES_NAME}
