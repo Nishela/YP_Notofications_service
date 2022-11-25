@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from api.v1 import notifications
+from api.v1 import notifications_api, templates_api
 from core.config import get_settings
 from rabbit_producer import rabbit_utils
 from rabbit_producer.producer import RabbitProducer
@@ -31,7 +31,9 @@ async def shutdown():
     await rabbit_utils.mq_connection.close()
 
 
-app.include_router(notifications.router, prefix='/api/v1/notifications', tags=['notifications'])
+app.include_router(notifications_api.router, prefix='/api/v1/notifications', tags=['notifications'])
+app.include_router(templates_api.router, prefix='/api/v1/templates', tags=['templates'])
+
 
 if __name__ == '__main__':
     uvicorn.run(

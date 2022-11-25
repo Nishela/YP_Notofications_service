@@ -33,6 +33,7 @@ def upgrade() -> None:
                     )
     op.create_table('templates',
                     sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
+                    sa.Column('name', sa.String(length=128), nullable=False),
                     sa.Column('body', sa.Text(), nullable=False),
                     sa.Column('notification_id', postgresql.UUID(as_uuid=True), nullable=True),
                     sa.ForeignKeyConstraint(('notification_id',), ['notifications.id'], ondelete='CASCADE'),
@@ -51,7 +52,9 @@ def upgrade() -> None:
 
         op.execute(
             insert(Templates).
-            values((uuid4(), HTML_MAPPER.get(notification_type), notification_data[0]))
+            values(
+                uuid4(), f'default_{notification_type.value}', HTML_MAPPER.get(notification_type), notification_data[0]
+            )
             .on_conflict_do_nothing()
         )
 
