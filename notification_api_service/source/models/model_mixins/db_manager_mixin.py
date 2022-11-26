@@ -1,11 +1,12 @@
-from database import DbManager
+from database import DbManager, AuthManager
 
 __all__ = (
-    'DbManagerMixin',
+    'ManagerMixin',
 )
 
 
-class DbManagerMixin:
+class ManagerMixin:
     """Добавляет в модели менеджера для работы с БД PG"""
     class ManagerConfig:
         db_manager = DbManager
+        auth_manager = AuthManager

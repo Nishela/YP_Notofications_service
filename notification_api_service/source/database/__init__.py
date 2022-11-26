@@ -1,1 +1,1 @@
-from .manager import *
+from .managers import *

@@ -30,7 +30,8 @@ async def send_email_notification(email: EmailModel, producer=Depends(get_mq_pro
                 status_code=HTTPStatus.NOT_FOUND,
                 content={'message': f'Template not found - {NotificationTypes.EMAIL.value}'}
             )
-
+    # отдаем user_id в сервис авторизации для получения информации о пользователе - user_info
+    # user_info = await email.ManagerConfig.auth_manager.async_get_user_info(email.user_id)
     message = await NotificationBuilder.async_build_email(email, template)
     await producer.async_publish(routing_key=NotificationTypes.EMAIL.value, body=message.as_string())
 
@@ -55,7 +56,8 @@ async def send_push_notification(push_notification: PushModel,
             status_code=HTTPStatus.NOT_FOUND,
             content={'message': f'Template not found - {NotificationTypes.PUSH.value}'}
         )
-
+    # отдаем user_id в сервис авторизации для получения информации о пользователе - user_info
+    # user_info = await email.ManagerConfig.auth_manager.async_get_user_info(email.user_id)
     message = await NotificationBuilder.async_build_push(push_notification, template)
     await producer.async_publish(routing_key=NotificationTypes.PUSH.value, body=message)
 
@@ -80,7 +82,8 @@ async def send_sms_notification(sms_notification: SmsModel,
             status_code=HTTPStatus.NOT_FOUND,
             content={'message': f'Template not found - {NotificationTypes.SMS.value}'}
         )
-
+    # отдаем user_id в сервис авторизации для получения информации о пользователе - user_info
+    # user_info = await email.ManagerConfig.auth_manager.async_get_user_info(email.user_id)
     message = await NotificationBuilder.async_build_sms(sms_notification, template)
     await producer.async_publish(routing_key=NotificationTypes.SMS.value, body=message)
 

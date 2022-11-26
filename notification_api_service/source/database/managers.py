@@ -7,6 +7,7 @@ from models.template_model import TemplateModel
 
 __all__ = (
     'DbManager',
+    'AuthManager'
 )
 
 
@@ -65,3 +66,10 @@ class DbManager:
                 .values(**args)
             )
             return True if success else False
+
+
+class AuthManager:
+    @classmethod
+    async def async_get_user_info(cls, user_id: str):
+        # тут должен быть запрос в сервис авторизации для получения данных пользователя
+        return
