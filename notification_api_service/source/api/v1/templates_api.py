@@ -35,7 +35,7 @@ async def add_template(template: TemplateModel, db_manager=Depends(get_db_manage
 
 
 @router.get('/get_template', response_model=TemplateModel, summary='Get template from database')
-async def add_template(template_id, db_manager=Depends(get_db_manager)) -> TemplateModel or JSONResponse:
+async def get_template(template_id, db_manager=Depends(get_db_manager)) -> TemplateModel or JSONResponse:
     """
         ## Get template from database:
         - _template_id_ - Идентификатор шаблона
@@ -50,7 +50,7 @@ async def add_template(template_id, db_manager=Depends(get_db_manager)) -> Templ
 
 
 @router.put('/upd_template', response_model=Any, summary='Update template in database')
-async def add_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
+async def upd_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
     """
         ## Update template in database:
         - _template_ - Модель шаблона
@@ -68,7 +68,7 @@ async def add_template(template: TemplateModel, db_manager=Depends(get_db_manage
 
 
 @router.delete('/del_template', response_model=Any, summary='Delete template from database')
-async def add_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
+async def del_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
     """
         ## Delete template from database:
         - _template_ - Модель шаблона
