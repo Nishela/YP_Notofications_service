@@ -1,22 +1,23 @@
 from http import HTTPStatus
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
+from database.managers import get_db_manager
 from models import TemplateModel
 
 router = APIRouter()
 
 
 @router.post('/add_template', response_model=Any, summary='Add template to database')
-async def add_template(template: TemplateModel) -> JSONResponse:
+async def add_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
     """
         ## Add template to database:
         - _template_ - Модель шаблона
     """
     if all(template.dict().values()):
-        if await template.ManagerConfig.db_manager.async_add_template(template):
+        if await db_manager.async_add_template(template):
             return JSONResponse(
                 status_code=HTTPStatus.OK,
                 content=f'Template {template.name} added successfully'
@@ -34,12 +35,12 @@ async def add_template(template: TemplateModel) -> JSONResponse:
 
 
 @router.get('/get_template', response_model=TemplateModel, summary='Get template from database')
-async def add_template(template_id) -> TemplateModel or JSONResponse:
+async def add_template(template_id, db_manager=Depends(get_db_manager)) -> TemplateModel or JSONResponse:
     """
         ## Get template from database:
         - _template_id_ - Идентификатор шаблона
     """
-    if result := await TemplateModel.ManagerConfig.db_manager.async_get_template(template_id=template_id):
+    if result := await db_manager.async_get_template(template_id=template_id):
         return TemplateModel(**result.__dict__)
 
     return JSONResponse(
@@ -49,12 +50,12 @@ async def add_template(template_id) -> TemplateModel or JSONResponse:
 
 
 @router.put('/upd_template', response_model=Any, summary='Update template in database')
-async def add_template(template: TemplateModel) -> JSONResponse:
+async def add_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
     """
         ## Update template in database:
         - _template_ - Модель шаблона
     """
-    if await template.ManagerConfig.db_manager.async_update_template(template):
+    if await db_manager.async_update_template(template):
         return JSONResponse(
             status_code=HTTPStatus.OK,
             content=f'Template {template.name} updated successfully'
@@ -67,12 +68,12 @@ async def add_template(template: TemplateModel) -> JSONResponse:
 
 
 @router.delete('/del_template', response_model=Any, summary='Delete template from database')
-async def add_template(template: TemplateModel) -> JSONResponse:
+async def add_template(template: TemplateModel, db_manager=Depends(get_db_manager)) -> JSONResponse:
     """
         ## Delete template from database:
         - _template_ - Модель шаблона
     """
-    if await template.ManagerConfig.db_manager.async_delete_template(template):
+    if await db_manager.async_delete_template(template):
         return JSONResponse(
             status_code=HTTPStatus.OK,
             content=f'Template {template.name} deleted successfully'

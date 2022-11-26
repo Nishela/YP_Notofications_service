@@ -1,12 +1,10 @@
 from pydantic import BaseModel
 
-from .model_mixins import ManagerMixin
-
 __all__ = (
     'SmsModel',
 )
 
 
-class SmsModel(BaseModel, ManagerMixin):
+class SmsModel(BaseModel):
     user: str
     content: str

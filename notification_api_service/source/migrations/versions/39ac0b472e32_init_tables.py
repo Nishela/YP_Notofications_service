@@ -53,7 +53,9 @@ def upgrade() -> None:
         op.execute(
             insert(Templates).
             values(
-                uuid4(), f'default_{notification_type.value}', HTML_MAPPER.get(notification_type), notification_data[0]
+                (
+                    uuid4(), f'default_{notification_type.value}', HTML_MAPPER.get(notification_type),
+                    notification_data[0])
             )
             .on_conflict_do_nothing()
         )

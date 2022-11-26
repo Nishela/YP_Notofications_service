@@ -3,8 +3,7 @@ from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 
-from dotenv import load_dotenv
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings
 
 from core.logger import LOGGING
 
@@ -13,7 +12,6 @@ __all__ = (
     'NotificationTypes',
 )
 
-load_dotenv()
 # Применяем настройки логирования
 logging_config.dictConfig(LOGGING)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
@@ -24,40 +22,52 @@ class AppConfig(BaseSettings):
     Конфигурация приложения.
     """
     base_dir: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    project_name: str = Field('PROJECT_NAME', env='PROJECT_NAME')
+    project_name: str
     logging = LOGGING
+
+    class Config:
+        env_prefix = 'glob_'
+        case_sensitive = False
 
 
 class MailConfig(BaseSettings):
     """
     Конфигурация email адреса проекта.
     """
-    mail_from: str = Field(..., env='MAIL_USERNAME')
+    mail_from: str
+
+    class Config:
+        env_prefix = 'smtp_'
+        case_sensitive = False
 
 
 class RabbitConfig(BaseSettings):
     """
     Конфигурация RabbitMQ.
     """
-    host: str = 'localhost'
-    port: int = 5672
-    login: str = ...
-    password: str = ...
-    exchange_point_name: str = 'notifications'
+    host: str
+    port: int
+    login: str
+    password: str
+    exchange_point_name: str
+
+    # uri: str
 
     class Config:
         env_prefix = 'rabbitmq_'
+        case_sensitive = False
 
 
 class PostgresConfig(BaseSettings):
     """
     Конфигурация PostgreSQL.
     """
-    uri: str = ...
-    echo_log: bool = True
+    database_uri: str
+    db_echo_log: bool
 
     class Config:
-        env_prefix = 'postgres_'
+        env_prefix = 'sqlalchemy_'
+        case_sensitive = False
 
 
 class NotificationTypes(Enum):

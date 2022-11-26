@@ -3,7 +3,7 @@ from enum import Enum
 from functools import lru_cache
 from logging import config as logging_config
 
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings
 
 from core.logger import LOGGING
 
@@ -14,28 +14,37 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
 
 class AppConfig(BaseSettings):
     base_dir: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    project_name: str = Field('PROJECT_NAME', env='PROJECT_NAME')
+    project_name: str
     logging = LOGGING
+
+    class Config:
+        env_prefix = 'glob_'
+        # env_file = os.path.join(os.path.dirname(BASE_DIR), '.env')
+        case_sensitive = False
 
 
 class RabbitMQ(BaseSettings):
-    host: str = 'localhost'
-    port: int = 15672
-    login: str = ...
-    password: str = ...
+    host: str
+    port: int
+    login: str
+    password: str
 
     class Config:
         env_prefix = 'rabbitmq_'
+        # env_file = os.path.join(os.path.dirname(BASE_DIR), '.env')
+        case_sensitive = False
 
 
 class MailConfig(BaseSettings):
-    username: str = ...
-    password: str = ...
-    port: int = ...
-    server: str = ...
+    username: str
+    password: str
+    port: int
+    server: str
 
     class Config:
-        env_prefix = 'mail_'
+        env_prefix = 'smtp_mail_'
+        # env_file = os.path.join(os.path.dirname(BASE_DIR), '.env')
+        case_sensitive = False
 
 
 class NotificationTypes(Enum):

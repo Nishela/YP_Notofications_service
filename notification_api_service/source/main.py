@@ -31,8 +31,8 @@ async def shutdown():
     await rabbit_utils.mq_connection.close()
 
 
-app.include_router(notifications_api.router, prefix='/api/v1/notifications', tags=['notifications'])
-app.include_router(templates_api.router, prefix='/api/v1/templates', tags=['templates'])
+app.include_router(notifications_api.router, prefix='/api/v1/notifications', tags=['Notifications'])
+app.include_router(templates_api.router, prefix='/api/v1/templates', tags=['Templates'])
 
 
 if __name__ == '__main__':

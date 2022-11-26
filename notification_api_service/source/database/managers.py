@@ -6,15 +6,15 @@ from database.tables import Notifications, Templates
 from models.template_model import TemplateModel
 
 __all__ = (
-    'DbManager',
-    'AuthManager'
+    'get_db_manager',
+    'get_auth_manager'
 )
 
 
 class DbManager:
 
     @classmethod
-    async def async_get_template(cls, notification_name: str = '', template_id: str = '') -> str or row:
+    async def async_get_template(cls, notification_name: str = '', template_id: str = '') -> str:
         """
         Получение шаблона для полученного типа уведомления
 
@@ -28,10 +28,11 @@ class DbManager:
                     select(Templates).join(Notifications, Templates.notification_id == Notifications.id)
                     .where(Notifications.name == notification_name)
                 )
-            else:
-                result = await session.execute(
-                    select(Templates).where(Templates.id == template_id)
-                )
+                return result.first()[0].body
+
+            result = await session.execute(
+                select(Templates).where(Templates.id == template_id)
+            )
             return result.first()[0]
 
     @classmethod
@@ -73,3 +74,11 @@ class AuthManager:
     async def async_get_user_info(cls, user_id: str):
         # тут должен быть запрос в сервис авторизации для получения данных пользователя
         return
+
+
+async def get_db_manager():
+    return DbManager
+
+
+async def get_auth_manager():
+    return AuthManager
