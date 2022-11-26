@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Union
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
@@ -35,7 +35,7 @@ async def add_template(template: TemplateModel, db_manager=Depends(get_db_manage
 
 
 @router.get('/get_template', response_model=TemplateModel, summary='Get template from database')
-async def get_template(template_id, db_manager=Depends(get_db_manager)) -> TemplateModel or JSONResponse:
+async def get_template(template_id, db_manager=Depends(get_db_manager)) -> Union[TemplateModel, JSONResponse]:
     """
         ## Get template from database:
         - _template_id_ - Идентификатор шаблона
