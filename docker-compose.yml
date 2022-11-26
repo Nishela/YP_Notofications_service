@@ -10,18 +10,18 @@ services:
     environment:
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_LOGIN}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     networks:
       - notification-service
 
   postgres:
-    image: postgres:14.2-alpine
+    image: postgres:13-alpine
     container_name: postgres
     environment:
-      - POSTGRES_DB=${POSTGRES_NAME}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - notification-service
 

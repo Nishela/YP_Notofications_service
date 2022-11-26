@@ -4,6 +4,7 @@ from sqlalchemy import (
     Column,
     Text,
     ForeignKey,
+    String
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -19,6 +20,7 @@ class Templates(Base):
     __tablename__ = "templates"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    name = Column(String(length=128), nullable=False)
     body = Column(Text(), nullable=False)
     notification_id = Column(UUID(as_uuid=True), ForeignKey('notifications.id'))
     notification = relationship("Notifications", back_populates="template", uselist=False)
